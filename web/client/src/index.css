@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+  @apply text-2xl font-medium; /* Apply Tailwind classes to h1 */
+}
+
+h2 {
+  @apply text-xl font-medium; /* Apply Tailwind classes to h2 */
+}
+
+h3 {
+  @apply text-lg font-medium; /* Apply Tailwind classes to h3 */
+}
+
+h4 {
+  @apply text-base font-medium; /* Apply Tailwind classes to h4 */
+}
+
+h5 {
+  @apply text-sm font-medium; /* Apply Tailwind classes to h5 */
+}
+
+h6 {
+  @apply text-xs font-medium; /* Apply Tailwind classes to h6 */
+}
+
+p {
+  @apply text-base font-normal; /* Apply Tailwind classes to <p> */
+}
+
+blockquote {
+  @apply text-lg italic border-l-4 border-gray-500 pl-4 py-2; /* Apply Tailwind classes to <blockquote> */
+}
+
+ul {
+  @apply list-disc pl-8; /* Apply Tailwind classes to <ul> */
+}
+
+ol {
+  @apply list-decimal pl-8; /* Apply Tailwind classes to <ol> */
+}
+
+li {
+  @apply mb-1; /* Apply Tailwind classes to <li> */
+}
+
+code {
+  @apply bg-gray-200 px-2 py-1 rounded; /* Apply Tailwind classes to <code> */
+}
+@layer components {
+  .bg-radial-dark {
+    background: radial-gradient(circle at center top, #273d5c 15%, #060606 70%);
+  }
+  .bg-radial-light {
+    background: radial-gradient(circle at center top, #d1c2a6 15%, #d69f39 70%);
+  }
+}
+
+.codex-editor {
+  z-index: unset;
+}
+/* change color when theme changed */
+* {
+  @apply transition-colors duration-[600];
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.word-break-all {
+  word-break: break-all;
+}

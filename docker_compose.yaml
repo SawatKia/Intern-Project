@@ -1,0 +1,113 @@
+services:
+    webserver:
+        profiles: [ "dev" ]
+        build: ./services/webserver
+        container_name: app-webserver
+        restart: no
+        volumes:
+            - ./core:/app/core
+            - ./services/webserver/src:/app/src
+            - ./web/client/dist:/app/react_build
+        env_file:
+            - ./secrets.env
+        ports:
+            - "0.0.0.0:8000:8000"
+            - "127.0.0.1:5678:5678"
+        networks:
+            - app_network
+    webserver-prod:
+        profiles: [ "prod" ]
+        build: ./services/webserver
+        container_name: app-webserver-prod
+        command: [ "python3", "src/main.py" ]
+        restart: no
+        volumes:
+            - ./core:/app/core
+            - ./services/webserver/src:/app/src
+            - ./web/client/dist:/app/react_build
+        env_file:
+            - ./secrets.env
+        ports:
+            - "0.0.0.0:8000:8000"
+        networks:
+            - app_network
+    email-service:
+        build: ./services/mailersend
+        container_name: app-email
+        restart: no
+        volumes:
+            - ./core:/app/core
+            - ./services/mailersend/src:/app/src
+        env_file:
+            - ./secrets.env
+        ports:
+            - "127.0.0.1:5688:5688"
+        networks:
+            - app_network
+    mongo-service:
+        profiles: ["prod", "dev"]
+        image: mongo:4.4.6
+        container_name: app-database
+        volumes:
+            - ./data:/data/db
+        ports:
+            - "127.0.0.1:27017:27017"
+        networks: 
+            - app_network
+    management:
+        build: ./services/management
+        container_name: app-management
+        restart: no
+        volumes:
+            - ./core:/app/core
+            - ./services/management/src:/app/src
+        env_file:
+            - ./secrets.env
+        ports:
+            - "0.0.0.0:9000:8000"
+            - "127.0.0.1:5698:5678"
+        networks:
+            - app_network
+    zookeeper:
+        profiles: [ "dev" ]
+        image: confluentinc/cp-zookeeper:latest
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+        ports:
+            - "127.0.0.1:22181:2181"
+        networks:
+            - app_network
+    kafka:
+        profiles: [ "dev" ]
+        image: confluentinc/cp-kafka:latest
+        depends_on:
+            - zookeeper
+        ports:
+            - "127.0.0.1:29092:29092"
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,CONNECTIONS_FROM_HOST://127.0.0.1:29092
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONNECTIONS_FROM_HOST:PLAINTEXT
+            KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        networks:
+            - app_network
+    consumer_template:
+        profiles: [ "dev" ]
+        build: ./services/consumer_template
+        container_name: app-consumer
+        restart: no
+        volumes:
+            - ./core:/app/core
+            - ./services/consumer_template/src:/app/src
+        env_file:
+            - ./secrets.env
+        ports:
+            - "127.0.0.1:5708:5708"
+        networks:
+            - app_network
+networks:
+    app_network:
+        driver: bridge

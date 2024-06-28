@@ -1,0 +1,14 @@
+mailersend
+aiohttp
+shortuuid
+pydantic
+sshtunnel
+pymongo
+uvicorn
+fastapi
+python-multipart
+debugpy
+bcrypt
+pyjwt
+python-dateutil
+pytz

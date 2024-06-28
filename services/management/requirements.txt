@@ -1,0 +1,13 @@
+uvicorn
+fastapi
+python-multipart
+debugpy
+bcrypt
+pyjwt
+pymongo
+sshtunnel
+python-dateutil
+requests
+omise
+pytz
+aiohttp

@@ -1,0 +1,9 @@
+debugpy
+pymongo
+sshtunnel
+python-dateutil
+requests
+omise
+pytz
+aiohttp
+kafka-python3
